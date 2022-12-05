@@ -39,23 +39,20 @@ function isLive( matrix, r, c, rows, cols ) {
     return false
 }
 
-export function interval( grid, rows, cols ) {
-    setInterval(function() {
-        let matrix = Array(rows).fill().map(() => Array(cols))
-        
-        for (var r = 0; r < rows; ++r) {
-            for (var c = 0; c < cols; ++c) {
-                matrix[r][c] = grid.rows[r].cells[c].style.backgroundColor === "rgb(204, 204, 204)"
-            }
+export function intervalFunc ( grid, rows, cols ) {
+    let matrix = Array(rows).fill().map(() => Array(cols))
+    
+    for (var r = 0; r < rows; ++r) {
+        for (var c = 0; c < cols; ++c) {
+            matrix[r][c] = grid.rows[r].cells[c].style.backgroundColor === "rgb(204, 204, 204)"
         }
+    }
 
-        for (var r = 0; r < rows; ++r) {
-            for (var c = 0; c < cols; ++c) {
-                grid.rows[r].cells[c].style.backgroundColor = isLive(matrix, r, c, rows, cols) ? "rgb(204, 204, 204)" : "rgb(17, 17, 17)"
-            }
+    for (var r = 0; r < rows; ++r) {
+        for (var c = 0; c < cols; ++c) {
+            grid.rows[r].cells[c].style.backgroundColor = isLive(matrix, r, c, rows, cols) ? "rgb(204, 204, 204)" : "rgb(17, 17, 17)"
         }
-
-    }, 200)
+    }
 }
 
 export function createButton ( text, type, func ) {
@@ -63,4 +60,12 @@ export function createButton ( text, type, func ) {
     button.innerHTML = text
     button.addEventListener ( type, func )
     return button
+}
+
+export function clearButton ( grid, rows, cols ) {
+    for (var r = 0; r < rows; ++r) {
+        for (var c = 0; c < cols; ++c) {
+            grid.rows[r].cells[c].style.backgroundColor = "rgb(17, 17, 17)"
+        }
+    }
 }
