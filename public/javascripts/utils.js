@@ -62,10 +62,61 @@ export function createButton ( text, type, func ) {
     return button
 }
 
-export function clearButton ( grid, rows, cols ) {
+export function setGrid ( grid, rows, cols, pattern ) {
     for (var r = 0; r < rows; ++r) {
         for (var c = 0; c < cols; ++c) {
-            grid.rows[r].cells[c].style.backgroundColor = "rgb(17, 17, 17)"
+            grid.rows[r].cells[c].style.backgroundColor = pattern[r][c] === 1 ? "rgb(204, 204, 204)" : "rgb(17, 17, 17)"
         }
     }
+}
+
+export function saveButton ( grid, rows, cols ) {
+    var button = document.createElement("button");
+    button.innerHTML = "Save";
+    button.addEventListener( "click", async function () {
+        var name = prompt("Enter pattern name : ", "");
+        if(name != null && name != "") {
+            var pattern = []
+            for (var r = 0; r < rows; ++r) {
+                var row = []
+                for (var c = 0; c < cols; ++c) {
+                    row.push(grid.rows[r].cells[c].style.backgroundColor == "rgb(17, 17, 17)" ? 0 : 1);
+                }
+                pattern.push(row)
+            }
+            
+            var data = { name: name, pattern: pattern };
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(function(response){
+                if(response.ok) {
+                    console.log('POST success.');
+                    return;
+                }
+                if(response.status == 403) {
+                    console.log('POST Failed: Pattern name already exists.');
+                    return;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    });
+    return button;
+}
+
+export function loadButtons ( grid, rows, cols, patterns ) {
+    patterns.forEach((obj) => {
+        var button = document.createElement("button")
+        button.innerHTML = obj.name
+        button.className = 'loadedButtons'
+        button.addEventListener ( "click", () => { setGrid( grid, rows, cols, obj.pattern ) } )
+        document.body.appendChild(button)
+    })
 }

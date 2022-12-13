@@ -9,11 +9,7 @@ body {
 }
 .grid td {
     cursor:pointer;
-    width:30px; height:30px;
     border:0.1px solid #444;
-    text-align:center;
-    font-family:sans-serif;
-    font-size:13px;
     width: 10px;
     height: 10px;
 }
@@ -24,10 +20,17 @@ button {
   padding: 0 20px;
   background: salmon;
   border: none;
+  margin-left: 10px;
 }
 button:hover {
   background: lightsalmon;
 }
-#stop, #clear {
-  margin-left: 10px;
+#simulate {
+  margin-left: 0px;
+}
+.loadedButtons {
+  background: rgb(114, 186, 250);
+}
+.loadedButtons:hover {
+  background: rgb(122, 251, 255);
 }
